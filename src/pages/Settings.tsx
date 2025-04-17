@@ -1,12 +1,21 @@
 
 import { useState } from "react";
 import { NavBar } from "@/components/assistant/NavBar";
-import { Moon, Sun, VolumeX, Volume2, Mic, MicOff, SlidersHorizontal } from "lucide-react";
+import { Moon, Sun, VolumeX, Volume2, Mic, MicOff, SlidersHorizontal, MessageSquare } from "lucide-react";
+import { useAssistant } from "@/contexts/AssistantContext";
 
 const Settings = () => {
   const [darkMode, setDarkMode] = useState(true);
   const [volume, setVolume] = useState(75);
-  const [voiceActivation, setVoiceActivation] = useState(true);
+  const { isWakeWordEnabled, toggleWakeWord } = useAssistant();
+  
+  // For demo purposes
+  const simulateIncomingCall = () => {
+    const { simulateIncomingCall } = useAssistant();
+    const contacts = ["Mom", "Dad", "John", "Sarah", "Boss"];
+    const randomContact = contacts[Math.floor(Math.random() * contacts.length)];
+    simulateIncomingCall(randomContact);
+  };
   
   return (
     <div className="assistant-container dark assistant-gradient">
@@ -53,15 +62,15 @@ const Settings = () => {
               <div className="space-y-4">
                 <div className="flex items-center justify-between bg-secondary/50 p-3 rounded-lg">
                   <div className="flex items-center gap-2">
-                    {voiceActivation ? <Mic className="w-5 h-5" /> : <MicOff className="w-5 h-5" />}
-                    <span>Voice activation</span>
+                    {isWakeWordEnabled ? <Mic className="w-5 h-5" /> : <MicOff className="w-5 h-5" />}
+                    <span>'Hey Abhi' wake word</span>
                   </div>
                   
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input 
                       type="checkbox" 
-                      checked={voiceActivation} 
-                      onChange={() => setVoiceActivation(!voiceActivation)} 
+                      checked={isWakeWordEnabled} 
+                      onChange={toggleWakeWord} 
                       className="sr-only peer" 
                     />
                     <div className="w-11 h-6 bg-muted rounded-full peer peer-checked:bg-primary peer-focus:ring-2 peer-focus:ring-primary/50"></div>
@@ -90,11 +99,28 @@ const Settings = () => {
               </div>
             </div>
             
+            {/* Demo Controls */}
+            <div className="mb-6">
+              <h2 className="text-lg font-semibold mb-3 flex items-center gap-2">
+                <MessageSquare className="w-5 h-5" />
+                Demo Controls
+              </h2>
+              
+              <div className="space-y-4">
+                <button
+                  onClick={simulateIncomingCall}
+                  className="w-full py-2 px-4 bg-primary/70 hover:bg-primary rounded-md transition-colors"
+                >
+                  Simulate Incoming Call
+                </button>
+              </div>
+            </div>
+            
             {/* Wake word configuration would go here */}
             <div>
               <h2 className="text-lg font-semibold mb-3">Wake Word</h2>
               <p className="text-muted-foreground">
-                Custom wake word configuration would be available in the full implementation.
+                The wake word is currently set to "Hey Abhi". In the full implementation, you would be able to customize this.
               </p>
             </div>
           </div>

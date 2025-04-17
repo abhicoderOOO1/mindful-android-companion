@@ -6,6 +6,7 @@ import { AssistantMessage } from "@/components/assistant/AssistantMessage";
 import { SuggestionChip } from "@/components/assistant/SuggestionChip";
 import { VisualFeedback } from "@/components/assistant/VisualFeedback";
 import { NavBar } from "@/components/assistant/NavBar";
+import { CallHandler } from "@/components/assistant/CallHandler";
 import { 
   Mic, 
   Calendar, 
@@ -13,7 +14,10 @@ import {
   MessageSquare, 
   Phone, 
   Settings,
-  RefreshCw
+  RefreshCw,
+  PhoneIncoming,
+  PhoneOutgoing,
+  PhoneOff
 } from "lucide-react";
 
 const Index = () => {
@@ -23,7 +27,9 @@ const Index = () => {
     isProcessing, 
     startListening, 
     sendTextCommand,
-    clearMessages
+    clearMessages,
+    callState,
+    simulateIncomingCall
   } = useAssistant();
 
   const [inputText, setInputText] = useState("");
@@ -46,13 +52,17 @@ const Index = () => {
     { text: "Set an alarm", icon: <BellRing className="w-4 h-4" />, action: () => sendTextCommand("Set an alarm for 7 AM") },
     { text: "Check calendar", icon: <Calendar className="w-4 h-4" />, action: () => sendTextCommand("What's on my calendar today?") },
     { text: "Send message", icon: <MessageSquare className="w-4 h-4" />, action: () => sendTextCommand("Send a message to John") },
-    { text: "Make a call", icon: <Phone className="w-4 h-4" />, action: () => sendTextCommand("Call Mom") },
-    { text: "Device settings", icon: <Settings className="w-4 h-4" />, action: () => sendTextCommand("Open WiFi settings") },
+    { text: "Call Mom", icon: <PhoneOutgoing className="w-4 h-4" />, action: () => sendTextCommand("Call Mom") },
+    { text: "Simulate incoming call", icon: <PhoneIncoming className="w-4 h-4" />, action: () => simulateIncomingCall("John") },
+    { text: "End call", icon: <PhoneOff className="w-4 h-4" />, action: () => sendTextCommand("Hang up the call") },
   ];
 
   return (
     <div className="assistant-container dark assistant-gradient">
       <NavBar className="bg-background/30 backdrop-blur-sm" />
+      
+      {/* Call Handler */}
+      <CallHandler />
       
       <main className="flex-1 flex flex-col">
         {/* Assistant chat area */}
