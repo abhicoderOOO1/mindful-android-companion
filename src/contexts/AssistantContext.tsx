@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 type MessageType = {
@@ -35,9 +34,8 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
   const [isWakeWordEnabled, setIsWakeWordEnabled] = useState(true);
   const [callState, setCallState] = useState<CallState>("idle");
   const [currentCaller, setCurrentCaller] = useState<string | null>(null);
-  const [wakeWordDetectionInterval, setWakeWordDetectionInterval] = useState<number | null>(null);
+  const [wakeWordDetectionInterval, setWakeWordDetectionInterval] = useState<NodeJS.Timeout | null>(null);
 
-  // Simulate the initial welcome message
   useEffect(() => {
     const welcomeMessage = {
       id: "welcome",
@@ -47,7 +45,6 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
     };
     setMessages([welcomeMessage]);
 
-    // Set up simulated wake word detection
     simulateWakeWordDetection();
 
     return () => {
@@ -57,14 +54,9 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  // Simulate wake word detection
   const simulateWakeWordDetection = () => {
-    // This is a simulation - in a real app, this would use the device's microphone
-    // and a speech recognition system that's constantly listening for the wake word
     if (isWakeWordEnabled) {
       const intervalId = setInterval(() => {
-        // Randomly simulate hearing "Hey Abhi" approximately once every 30-60 seconds
-        // This is just for demo purposes
         if (Math.random() < 0.005 && !isListening && callState === "idle") {
           const wakeMessage = {
             id: Date.now().toString(),
@@ -74,10 +66,8 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
           };
           setMessages(prev => [...prev, wakeMessage]);
           
-          // Activate the assistant
           startListening();
           
-          // Add assistant response
           setTimeout(() => {
             const responseMessage = {
               id: (Date.now() + 1).toString(),
@@ -97,12 +87,10 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // Toggle wake word detection on/off
   const toggleWakeWord = () => {
     setIsWakeWordEnabled(prev => !prev);
   };
 
-  // Effect to handle changes in wake word enablement
   useEffect(() => {
     if (wakeWordDetectionInterval) {
       clearInterval(wakeWordDetectionInterval);
@@ -114,15 +102,12 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
     }
   }, [isWakeWordEnabled]);
 
-  // Simulated voice recognition - in a real app this would use the Web Speech API
   const startListening = () => {
     setIsListening(true);
     
-    // Simulate listening for 3 seconds
     setTimeout(() => {
       stopListening();
       
-      // Simulate user message after listening stops
       const userMessage = {
         id: Date.now().toString(),
         text: getRandomUserMessage(),
@@ -133,7 +118,17 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
       setMessages((prev) => [...prev, userMessage]);
       setIsProcessing(true);
       
-      // Simulate assistant processing and response
+      const lowerText = userMessage.text.toLowerCase();
+      if (
+        lowerText.includes("call") || 
+        lowerText.includes("answer") || 
+        lowerText.includes("decline") || 
+        lowerText.includes("hang up") ||
+        lowerText.includes("end call")
+      ) {
+        processCallCommand(lowerText);
+      }
+      
       setTimeout(() => {
         const assistantMessage = {
           id: (Date.now() + 1).toString(),
@@ -152,7 +147,6 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
     setIsListening(false);
   };
 
-  // Send a text command instead of using voice
   const sendTextCommand = (text: string) => {
     const userMessage = {
       id: Date.now().toString(),
@@ -164,7 +158,6 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
     setMessages((prev) => [...prev, userMessage]);
     setIsProcessing(true);
     
-    // Process call commands
     const lowerText = text.toLowerCase();
     if (
       lowerText.includes("call") || 
@@ -176,7 +169,6 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
       processCallCommand(lowerText);
     }
     
-    // Simulate assistant processing and response
     setTimeout(() => {
       const assistantMessage = {
         id: (Date.now() + 1).toString(),
@@ -190,14 +182,11 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
     }, 1500);
   };
 
-  // Process call-related commands
   const processCallCommand = (text: string) => {
     if (text.includes("call") && callState === "idle") {
-      // Extract name to call
       const nameMatch = text.match(/call\s+(\w+)/i);
       const name = nameMatch ? nameMatch[1] : "Mom";
       
-      // Simulate outgoing call
       handleCall("call", name);
     } else if (text.includes("answer") && callState === "incoming") {
       handleCall("answer");
@@ -209,7 +198,6 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // Handle call actions
   const handleCall = (action: "answer" | "decline" | "end" | "call", recipient?: string) => {
     switch (action) {
       case "call":
@@ -217,7 +205,6 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
           setCallState("outgoing");
           setCurrentCaller(recipient);
           
-          // Simulate connecting after a delay
           setTimeout(() => {
             setCallState("ongoing");
             
@@ -278,7 +265,6 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // Simulate incoming call
   const simulateIncomingCall = (caller: string) => {
     if (callState === "idle") {
       setCallState("incoming");
@@ -335,7 +321,6 @@ export function useAssistant() {
   return context;
 }
 
-// Helper functions for demo purposes
 function getRandomUserMessage() {
   const messages = [
     "What's the weather like today?",
