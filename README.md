@@ -1,73 +1,42 @@
-# Welcome to your Lovable project
 
-## Project info
+# Mindful Android Assistant
 
-**URL**: https://lovable.dev/projects/17283e27-7b11-41f2-b801-419c8f77832e
+A privacy-focused AI assistant for Android devices.
 
-## How can I edit this code?
+## Building the Android APK
 
-There are several ways of editing your application.
+To build and run the Android application:
 
-**Use Lovable**
+1. Clone this repository to your local machine
+2. Install dependencies:
+   ```
+   npm install
+   ```
+3. Build the web app:
+   ```
+   npm run build
+   ```
+4. Sync the built files with Capacitor:
+   ```
+   npx cap sync
+   ```
+5. Open the Android project in Android Studio:
+   ```
+   npx cap open android
+   ```
+6. Use Android Studio to build and run the app on an emulator or physical device.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/17283e27-7b11-41f2-b801-419c8f77832e) and start prompting.
+## Live Development
 
-Changes made via Lovable will be committed automatically to this repo.
+For development with live reloads:
 
-**Use your preferred IDE**
+1. Run the dev server:
+   ```
+   npm run dev
+   ```
+2. In another terminal window, run:
+   ```
+   npx cap run android
+   ```
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/17283e27-7b11-41f2-b801-419c8f77832e) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+This will start the app on your Android device with live reloading from your development environment.
